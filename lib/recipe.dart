@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:im_stepper/stepper.dart';
 import 'package:recipe_app/home_controller.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:flip_card/flip_card.dart';
 
-import 'models/recipe_model.dart';
+import 'models/ingredient_model.dart';
 
 class RecipePage extends StatelessWidget {
   const RecipePage({Key? key}) : super(key: key);
@@ -38,52 +39,52 @@ class RecipeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeController homeController = Get.find();
     List<Ingredient> ingredient = [
       Ingredient(
-        image: 'assets/queso.png',
+        imagen: 'assets/queso.png',
         proporcion: '1/2',
         name: 'Queso',
-        iconoProporcion: 'assets/cuchara.png',
+        icono: 'assets/cuchara.png',
       ),
       Ingredient(
-        image: 'assets/tomate.png',
+        imagen: 'assets/tomate.png',
         proporcion: '2/4',
         name: 'Tomate',
-        iconoProporcion: 'assets/cuchara.png',
+        icono: 'assets/cuchara.png',
       ),
       Ingredient(
-        image: 'assets/lechuga.png',
+        imagen: 'assets/lechuga.png',
         proporcion: '1/2',
         name: 'Lechuga',
-        iconoProporcion: 'assets/cuchara.png',
+        icono: 'assets/cuchara.png',
       ),
       Ingredient(
-        image: 'assets/hamburguesa.png',
+        imagen: 'assets/hamburguesa.png',
         proporcion: '1/2',
         name: 'Hamburguesa',
-        iconoProporcion: 'assets/cuchara.png',
+        icono: 'assets/cuchara.png',
       ),
       Ingredient(
-        image: 'assets/huevo.png',
+        imagen: 'assets/huevo.png',
         proporcion: '2',
         name: 'Huevo',
-        iconoProporcion: 'assets/cuchara.png',
+        icono: 'assets/cuchara.png',
       ),
       Ingredient(
-        image: 'assets/pan.png',
+        imagen: 'assets/pan.png',
         proporcion: '1',
         name: 'Pan',
-        iconoProporcion: 'assets/cuchara.png',
+        icono: 'assets/cuchara.png',
       ),
       Ingredient(
-        image: 'assets/mostaza.png',
+        imagen: 'assets/mostaza.png',
         proporcion: '1',
         name: 'Mostaza',
-        iconoProporcion: 'assets/cuchara.png',
+        icono: 'assets/cuchara.png',
       ),
     ];
 
-    HomeController homeController = Get.put(HomeController());
     double w = MediaQuery.of(context).size.width;
     return Container(
       height: 500,
@@ -109,20 +110,90 @@ class RecipeBody extends StatelessWidget {
             child: const ToggleSwitchWidget(),
           ),
           Expanded(
-            child: Container(
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                itemCount: ingredient.length,
-                itemBuilder: (context, index) => IngredientsCard(
-                  ingredient: ingredient[index],
-                ),
-              ),
-            ),
+            child: Obx(() => Container(
+                child: homeController.isInstruction.value == false
+                    ? ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: homeController.recipe[0].ingredientes.length,
+                        itemBuilder: (context, index) => IngredientsCard(
+                          ingredient:
+                              homeController.recipe[0].ingredientes[index],
+                        ),
+                      )
+                    : const InstuccionesSection())),
           ),
         ],
       ),
     );
+  }
+}
+
+class InstuccionesSection extends StatelessWidget {
+  const InstuccionesSection({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    HomeController homeController = Get.find();
+    List<int> list = List.generate(5, (index) => index + 1);
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        elevation: 3,
+        child: Column(
+          children: [
+            NumberStepper(
+              numbers: list,
+              lineDotRadius: 2,
+              stepRadius: 15,
+              stepColor: Colors.grey,
+              activeStepColor: Colors.amber,
+
+              enableNextPreviousButtons: false,
+
+              activeStep: homeController.activeStep.value,
+              onStepReached: (index) {
+                homeController.activeStep.value = index;
+              },
+
+              // activeStep property set to activeStep variable defined above.
+            ),
+            Obx(() => Text(headerText(homeController)))
+          ],
+        ),
+      ),
+    );
+  }
+
+  String headerText(HomeController homeController) {
+    switch (homeController.activeStep.value) {
+      case 1:
+        return 'lorem ipsum dolor sit amet';
+
+      case 2:
+        return 'Table of Contents lorem ipsum dolor sit amet';
+
+      case 3:
+        return 'About the Author';
+
+      case 4:
+        return 'Publisher Information';
+
+      case 5:
+        return 'Reviews';
+
+      case 6:
+        return 'Chapters #1';
+
+      default:
+        return 'Introduction';
+    }
   }
 }
 
@@ -156,7 +227,7 @@ class IngredientsCard extends StatelessWidget {
                 height: 90,
                 width: 80,
                 child: Image.asset(
-                  ingredient.image,
+                  ingredient.imagen,
                   fit: BoxFit.fill,
                 ),
               ),
@@ -184,7 +255,7 @@ class IngredientsCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 5),
                   Image.asset(
-                    ingredient.iconoProporcion,
+                    ingredient.icono,
                     fit: BoxFit.cover,
                   ),
                 ],
@@ -223,6 +294,7 @@ class ToggleSwitchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeController homeController = Get.find();
     return ToggleSwitch(
       minHeight: 40,
       borderWidth: 5,
@@ -238,13 +310,20 @@ class ToggleSwitchWidget extends StatelessWidget {
       activeFgColor: Colors.amber,
       inactiveBgColor: Colors.grey,
       inactiveFgColor: Colors.white,
-      initialLabelIndex: 1,
+      initialLabelIndex: 0,
       totalSwitches: 2,
-      labels: const ['Instrucciones', 'Ingredientes'],
+      labels: const ['Ingredientes', 'Instrucciones'],
       fontSize: 18,
       radiusStyle: true,
       onToggle: (index) {
         print('switched to: $index');
+        if (index == 0) {
+          homeController.isInstruction.value = false;
+          print(homeController.isInstruction.value);
+        } else {
+          homeController.isInstruction.value = true;
+          print(homeController.isInstruction.value);
+        }
       },
     );
   }
@@ -257,6 +336,8 @@ class TresIconosSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeController homeController = Get.find();
+
     return Row(
       children: [
         Expanded(
@@ -264,7 +345,7 @@ class TresIconosSection extends StatelessWidget {
           child: Column(
             children: [
               Icon(Icons.timer_rounded, size: 30, color: Colors.grey[600]),
-              const Text("45 min"),
+              Text(homeController.recipe[0].tiempoPrep),
             ],
           ),
         ),
@@ -273,7 +354,7 @@ class TresIconosSection extends StatelessWidget {
           child: Column(
             children: [
               Icon(Icons.restaurant_menu, size: 30, color: Colors.grey[600]),
-              const Text("Porciones: 4"),
+              Text("Porciones: ${homeController.recipe[0].cantRaciones}"),
             ],
           ),
         ),
@@ -346,11 +427,12 @@ class RecipeTittle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeController homeController = Get.find();
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: w / 10, vertical: 20),
-      child: const Text(
-        "Hamburgesa de Queso",
-        style: TextStyle(
+      child: Text(
+        homeController.recipe[0].name,
+        style: const TextStyle(
           fontSize: 30,
         ),
       ),
@@ -373,8 +455,6 @@ class HeaderRecipe extends StatelessWidget {
           left: 20,
           child: BackButton(),
         ),
-
-        // TODO: Hacer el rating por estrellas.
       ],
     );
   }
@@ -387,14 +467,15 @@ class ImagenRecipe extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 300,
-      width: double.infinity,
-      child: Image.network(
-        'https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1744&q=80',
-        fit: BoxFit.fill,
-      ),
-    );
+    HomeController homeController = Get.find();
+    return Obx(() => SizedBox(
+          height: 300,
+          width: double.infinity,
+          child: Image.asset(
+            homeController.recipe[0].image,
+            fit: BoxFit.fill,
+          ),
+        ));
   }
 }
 
