@@ -1,0 +1,59 @@
+{
+	"recipes": [
+		{
+			"name": "Hambuegesa de queso",
+			"image": "assets/flan.jpg",
+			"cantRaciones": "4",
+			"tiempoPrep": "20 min",
+			"intrucciones": "1. En una sartén, calienta el queso rallado y el huevo.\n2. Añade el tomate, el aceite y el azúcar.\n3. Deja cocinar por 10 minutos.\n4. Añade el queso y cocina por 5 minutos más.\n5. Sirve con una cucharada de mostaza y una cucharada de vinagre de arroz.",
+			"ingredientes": [
+				{
+					"imagen": "assets/queso.png",
+					"proporcion": "1/2",
+					"name": "Queso",
+					"icono": "assets/cuchara.png"
+				},
+				{
+					"imagen": "assets/tomate.png",
+					"proporcion": "2/4",
+					"name": "Tomate",
+					"icono": "assets/cuchara.png"
+				},
+				{
+					"imagen": "assets/lechuga.png",
+					"proporcion": "1/2",
+					"name": "Lechuga",
+					"icono": "assets/cuchara.png"
+				},
+
+				{
+					"imagen": "assets/hamburguesa.png",
+					"proporcion": "1/2",
+					"name": "Hamburguesa",
+					"icono": "assets/cuchara.png"
+				},
+
+				{
+					"imagen": "assets/huevo.png",
+					"proporcion": "2",
+					"name": "Huevo",
+					"icono": "assets/cuchara.png"
+				},
+
+				{
+					"imagen": "assets/pan.png",
+					"proporcion": "1",
+					"name": "Pan",
+					"icono": "assets/cuchara.png"
+				},
+
+				{
+					"imagen": "assets/mostaza.png",
+					"proporcion": "1",
+					"name": "Mostaza",
+					"icono": "assets/cuchara.png"
+				}
+			]
+		}
+	]
+}

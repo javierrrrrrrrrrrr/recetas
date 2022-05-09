@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipe_app/recipe.dart';
+
+import 'home_controller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +18,7 @@ class HomePage extends StatelessWidget {
     li.add("assets/menu/huevos6.jpg");
     li.add("assets/menu/acompanante7.jpg");
     li.add("assets/menu/salsas8.jpg");
+    HomeController homeController = Get.put(HomeController());
     return Scaffold(
         body: SafeArea(
       child: Column(
