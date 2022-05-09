@@ -8,61 +8,11 @@ class Postres extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: [
-            SizedBox(
-              height: Get.height * 0.45,
-              width: Get.width,
-              child: Image.asset(
-                'assets/postres_home.png',
-                fit: BoxFit.fill,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: Get.height * 0.4),
-              child: Container(
-                height: Get.height * 0.6,
-                width: Get.width,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(30),
-                      topLeft: Radius.circular(30),
-                    )),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        itemCount: 40,
-                        itemBuilder: (context, index) => const Carta(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class Carta extends StatelessWidget {
-  const Carta({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
-      child: Container(
-        height: Get.height * 0.16,
-        width: Get.width * 0.9,
-        decoration: const BoxDecoration(
+        child: Container(
+          margin: const EdgeInsets.only(left: 50, top: 50),
+          height: Get.height * 0.43,
+          width: Get.width * 0.75,
+          decoration: const BoxDecoration(
             boxShadow: [
               BoxShadow(
                 color: Color.fromRGBO(0, 0, 0, 0.25),
@@ -72,74 +22,67 @@ class Carta extends StatelessWidget {
               ),
             ],
             color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(25))),
-        child: Row(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 20),
-              height: Get.height * 0.12,
-              width: Get.width * 0.25,
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/flan.jpg'), fit: BoxFit.fill),
-                  borderRadius: BorderRadius.all(Radius.circular(12))),
-            ),
-            const SizedBox(
-              width: 25,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Flan'),
-                const Text('Dificultad: fácil'),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.family_restroom,
-                      size: 16,
-                      color: Colors.blue,
-                    ),
-                    const Text('6  '),
-                    Container(
-                      margin: const EdgeInsets.only(right: 5),
-                      height: 10,
-                      width: 1,
-                      color: Colors.grey,
-                    ),
-                    const Icon(
-                      Icons.timer,
-                      size: 16,
-                      color: Colors.blue,
-                    ),
-                    const Text(' 2h  '),
-                    Container(
-                      margin: const EdgeInsets.only(right: 5),
-                      height: 10,
-                      width: 1,
-                      color: Colors.grey,
-                    ),
-                    const Icon(
-                      Icons.food_bank_sharp,
-                      color: Colors.blue,
-                      size: 16,
-                    ),
-                    const Text(' postre  '),
-                  ],
+          ),
+          child: Column(
+            children: [
+              SizedBox(
+                height: Get.height * 0.3,
+                width: Get.width * 0.75,
+                child: Image.asset(
+                  'assets/flan.jpg',
+                  fit: BoxFit.fill,
                 ),
-                const SizedBox(
-                  width: 200,
-                  height: 70,
-                  child: Text(
-                    'El flan es uno de los postres por excelencia y una de las mejores opciones para terminar cualquier comida. Es tan popular que hoy en día podemos elaborarlo de prácticamente cualquier sabor que se nos ocurra.',
-                    style: TextStyle(fontSize: 10),
-                  ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Flan',
+                style: TextStyle(fontSize: 25),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 1,
+                width: 130,
+                color: Colors.black,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                '38,00 Kg',
+                style: TextStyle(fontSize: 25),
+              ),
+              ClipPath(
+                clipper: CustomClipPath(),
+                child: Container(
+                  height: 10,
+                  width: 50,
+                  color: Colors.orange,
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+class CustomClipPath extends CustomClipper<Path> {
+  var radius = 10.0;
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, 200);
+    path.lineTo(200, 200);
+    path.lineTo(260, 0);
+    path.lineTo(30, 0);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
